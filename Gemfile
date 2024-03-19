@@ -73,3 +73,4 @@ end
 group :production do
   gem 'pg'
 end
+# gim最新にアップデート完了
