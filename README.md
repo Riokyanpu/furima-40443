@@ -11,13 +11,13 @@
 | surname_kana       | string   | null: false |
 | name               | string   | null: false |
 | name_kana          | string   | null: false |
-| date_of_birth      | datetime | null: false |
+| date_of_birth      | date     | null: false |
 
 ### Association
 
 - has_many :items
-- has_many :buers
-<!-- - has_many :messages -->
+- has_many :buyer
+
 
 ##  itemsテーブル
 
@@ -37,13 +37,13 @@
 
 - belongs_to :user
 - has_one :buyer
-<!-- - has_many :messages -->
+
 
 ## buyers テーブル
 
 | Column | Type       | Options                        |
 | ------ | ---------- | ------------------------------ |
-| user   | references | null: false, foreign_key: true |投稿者
+| user   | references | null: false, foreign_key: true |
 | item   | references | null: false, foreign_key: true |
 
 ### Association
@@ -56,9 +56,9 @@
 
 | Column           | Type         | Options                        |
 | ---------------- | ------------ | ------------------------------ |
-| post_code        | integer      | null: false                    |
+| post_code        | string       | null: false                    |
 | prefecture_id    | integer      | null: false                    |
-| municipalities   | string       | null: false                    |
+| municipality     | string       | null: false                    |
 | street_address   | string       | null: false                    |
 | building_name    | string       |                                |
 | telephone_number | string       | null: false                    |
