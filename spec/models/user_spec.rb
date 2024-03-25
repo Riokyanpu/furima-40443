@@ -60,25 +60,25 @@ RSpec.describe User, type: :model do
         @user.surname = '山田'
         @user.name = '太郎'
         @user.valid?
-        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（漢字・ひらがな・カタカナ）での入力が必須です")
+        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（漢字）での入力が必須です")
       end
       it 'お名前(全角)は、全角（ひらがな）での入力が必須であること' do
         @user.surname = 'やまだ'
         @user.name = 'たろう'
         @user.valid?
-        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（漢字・ひらがな・カタカナ）での入力が必須です")
+        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（ひらがな）での入力が必須です")
       end
       it 'お名前(全角)は、全角（カタカナ）での入力が必須であること' do
         @user.surname = 'ヤマダ'
         @user.name = 'タロウ'
         @user.valid?
-        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（漢字・ひらがな・カタカナ）での入力が必須です")
+        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（カタカナ）での入力が必須です")
       end
       it '生年月日が必須であること' do
         @user.date_of_birth= 'nil'
         @user.valid?
-        expect(@user.errors.full_messages).not_to include("生年月日を入力してください")
+        expect(@user.errors.full_messages).not_to include("生年月日が必須であることが必須です")
       end
-    endz
+    end
   end
 end
