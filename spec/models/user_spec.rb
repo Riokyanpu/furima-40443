@@ -26,17 +26,12 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include("Password can't be blank")
       end
-      # it 'passwordとpassword_confirmationが不一致では登録できない' do
-      #   @user.password = '123456'
-      #   @user.password_confirmation = '1234567'
-      #   @user.valid?
-      #   expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
-      # end
-      # it 'nicknameが7文字以上では登録できない' do
-      #   @user.nickname = 'aaaaaaa'
-      #   @user.valid?
-      #   expect(@user.errors.full_messages).to include('Nickname is too long (maximum is 6 characters)')
-      # end
+      it 'passwordとpassword_confirmationが不一致では登録できない' do
+        @user.password = '123456'
+        @user.password_confirmation = '1234567'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
+      end
       it '重複したemailが存在する場合は登録できない' do
         @user.save
         another_user = FactoryBot.build(:user)
@@ -55,8 +50,35 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include('Password is too short (minimum is 6 characters)')
       end
-      # it 'passwordが129文字以上では登録できない' do
-      # end
-    end
+      it 'パスワードは、半角英数字混合であること' do
+        @user.password = 'password123'
+        @user.password_confirmation = 'password123'
+        @user.valid?
+        expect(@user.errors.full_messages).not_to include("Password は半角英数字混合で入力してください")
+      end
+      it 'お名前(全角)は、全角（漢字）での入力が必須であること' do
+        @user.surname = '山田'
+        @user.name = '太郎'
+        @user.valid?
+        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（漢字・ひらがな・カタカナ）での入力が必須です")
+      end
+      it 'お名前(全角)は、全角（ひらがな）での入力が必須であること' do
+        @user.surname = 'やまだ'
+        @user.name = 'たろう'
+        @user.valid?
+        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（漢字・ひらがな・カタカナ）での入力が必須です")
+      end
+      it 'お名前(全角)は、全角（カタカナ）での入力が必須であること' do
+        @user.surname = 'ヤマダ'
+        @user.name = 'タロウ'
+        @user.valid?
+        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（漢字・ひらがな・カタカナ）での入力が必須です")
+      end
+      it '生年月日が必須であること' do
+        @user.date_of_birth= 'nil'
+        @user.valid?
+        expect(@user.errors.full_messages).not_to include("生年月日を入力してください")
+      end
+    endz
   end
 end
