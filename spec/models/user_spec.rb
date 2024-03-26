@@ -104,15 +104,14 @@ RSpec.describe User, type: :model do
       it '姓（カナ）が空だと登録できない' do
         @user.surname_kana = '' 
         @user.valid? 
-        expect(@user.errors.full_messages).to include("Surname kana はひらがな、カタカナのみ使用できます") 
+        expect(@user.errors.full_messages).to include("Surname kana はカタカナのみ使用できます") 
       end
 
       it '姓（カナ）にカタカナ以外の文字が含まれていると登録できない' do
         @user.surname_kana = 'やまだ' 
         @user.valid? 
-        expect(@user.errors.full_messages).to include("Surname kana はひらがな、カタカナのみ使用できます") 
+        expect(@user.errors.full_messages).to include("Surname kana はカタカナのみ使用できます") 
       end
-
 
       it '名（カナ）が空だと登録できない' do
         @user.name= '' 
@@ -123,8 +122,7 @@ RSpec.describe User, type: :model do
       it '名（カナ）にカタカナ以外の文字が含まれていると登録できない' do
         @user.name_kana = 'たろう'
         @user.valid?
-        binding.pry
-        expect(@user.errors.full_messages).to include("Name kana はひらがな、カタカナ、漢字のみ使用できます")
+        expect(@user.errors.full_messages).to include("Name kana はカタカナのみ使用できます")
       end
 
       it '生年月日が必須であること' do
@@ -132,6 +130,7 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).not_to include("生年月日が必須であることが必須です")
       end
+
     end
   end
 end
