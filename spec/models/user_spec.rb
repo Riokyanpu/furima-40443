@@ -90,10 +90,22 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include('姓（全角）はひらがな、カタカナ、漢字のみ使用できます')
       end
 
-      it '姓お名前(全角)は、全角（漢字）での入力が必須であること' do
+      it '姓(全角)は、全角（漢字）での入力が必須であること' do
         @user.surname = '山田'
         @user.valid?
-        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（漢字）での入力が必須です")
+        expect(@user.errors.full_messages).not_to include("姓(全角)は、全角（漢字）での入力が必須です")
+      end
+      
+      it 'お名前(全角)は、全角（カタカナ）での入力が必須であること' do
+        @user.surname = 'ヤマダ'
+        @user.valid?
+        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（カタカナ）での入力が必須です")
+      end
+
+      it '姓全角)は、全角（ひらがな）での入力が必須であること' do
+        @user.surname = 'やまだ'
+        @user.valid?
+        expect(@user.errors.full_messages).not_to include("姓(全角)は、全角（ひらがな）での入力が必須です")
       end
 
       it '名(全角)が空では登録できない' do
@@ -102,32 +114,30 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).not_to include("名(全角)は、全角（漢字）での入力が必須です")
       end
 
+      it '名（全角）に半角文字が含まれていると登録できない' do
+        @user.name = 'Tarou'
+        @user.valid?
+        expect(@user.errors.full_messages).to include('名（全角）はひらがな、カタカナ、漢字のみ使用できます')
+      end
+
       it 'お名前(全角)は、全角（漢字）での入力が必須であること' do
         @user.name = '太郎'
         @user.valid?
         expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（漢字）での入力が必須です")
       end
 
-      it 'お名前(全角)は、全角（ひらがな）での入力が必須であること' do
-        @user.surname = 'やまだ'
-        @user.valid?
-        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（ひらがな）での入力が必須です")
-      end
-      
       it 'お名前(全角)は、全角（カタカナ）での入力が必須であること' do
-        @user.surname = ''
-        @user.name = ''
-        @user.valid?
-        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（カタカナ）での入力が必須です")
-      end
-
-      it 'お名前(全角)は、全角（カタカナ）での入力が必須であること' do
-        @user.surname = 'ヤマダ'
         @user.name = 'タロウ'
         @user.valid?
         expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（カタカナ）での入力が必須です")
       end
 
+      it 'お名前(全角)は、全角（ひらがな）での入力が必須であること' do
+        @user.name = 'たろう'
+        @user.valid?
+        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（ひらがな）での入力が必須です")
+      end
+      
       it '生年月日が必須であること' do
         @user.date_of_birth= 'nil'
         @user.valid?
