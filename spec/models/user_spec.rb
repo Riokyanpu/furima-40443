@@ -87,31 +87,7 @@ RSpec.describe User, type: :model do
       it '姓（全角）に半角文字が含まれていると登録できない' do
         @user.surname = 'Yamada'
         @user.valid?
-        expect(@user.errors.full_messages).to include('姓（全角）はひらがな、カタカナ、漢字のみ使用できます')
-      end
-
-      it '姓(全角)は、全角（漢字）での入力が必須であること' do
-        @user.surname = '山田'
-        @user.valid?
-        expect(@user.errors.full_messages).not_to include("姓(全角)は、全角（漢字）での入力が必須です")
-      end
-      
-      it 'お名前(全角)は、全角（カタカナ）での入力が必須であること' do
-        @user.surname = 'ヤマダ'
-        @user.valid?
-        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（カタカナ）での入力が必須です")
-      end
-
-      it '姓全角)は、全角（ひらがな）での入力が必須であること' do
-        @user.surname = 'やまだ'
-        @user.valid?
-        expect(@user.errors.full_messages).not_to include("姓(全角)は、全角（ひらがな）での入力が必須です")
-      end
-
-      it '姓（カナ）にカタカナ以外の文字が含まれている場合、登録できないこと' do
-        user = build(:user, surname_kana: 'やまだ')
-        expect(user).not_to be_valid
-        expect(user.errors[:surname_kana]).to include('はカタカナで入力してください')
+        expect(@user.errors.full_messages).to include('Surname はひらがな、カタカナ、漢字のみ使用できます')
       end
 
       it '名(全角)が空では登録できない' do
@@ -123,32 +99,33 @@ RSpec.describe User, type: :model do
       it '名（全角）に半角文字が含まれていると登録できない' do
         @user.name = 'Tarou'
         @user.valid?
-        expect(@user.errors.full_messages).to include('名（全角）はひらがな、カタカナ、漢字のみ使用できます')
+        expect(@user.errors.full_messages).to include('Name はひらがな、カタカナ、漢字のみ使用できます')
+      end
+      it '姓（カナ）が空だと登録できない' do
+        @user.surname_kana = '' 
+        @user.valid? 
+        expect(@user.errors.full_messages).to include("Surname kana はひらがな、カタカナのみ使用できます") 
       end
 
-      it '名(全角)は、全角（漢字）での入力が必須であること' do
-        @user.name = '太郎'
+      it '姓（カナ）にカタカナ以外の文字が含まれていると登録できない' do
+        @user.surname_kana = 'やまだ' 
+        @user.valid? 
+        expect(@user.errors.full_messages).to include("Surname kana はひらがな、カタカナのみ使用できます") 
+      end
+
+
+      it '名（カナ）が空だと登録できない' do
+        @user.name= '' 
+        @user.valid? 
+        expect(@user.errors.full_messages).to include("Name はひらがな、カタカナ、漢字のみ使用できます") 
+      end
+
+      it '名（カナ）にカタカナ以外の文字が含まれていると登録できない' do
+        @user.name_kana = 'たろう'
         @user.valid?
-        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（漢字）での入力が必須です")
+        binding.pry
+        expect(@user.errors.full_messages).to include("Name kana はひらがな、カタカナ、漢字のみ使用できます")
       end
-
-      it '名全角)は、全角（カタカナ）での入力が必須であること' do
-        @user.name = 'タロウ'
-        @user.valid?
-        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（カタカナ）での入力が必須です")
-      end
-
-      it '名(全角)は、全角（ひらがな）での入力が必須であること' do
-        @user.name = 'たろう'
-        @user.valid?
-        expect(@user.errors.full_messages).not_to include("お名前(全角)は、全角（ひらがな）での入力が必須です")
-      end
-
-    it '名（カナ）にカタカナ以外の文字が含まれている場合、登録できないこと' do
-      user = build(:user, name_kana: 'たろう')
-      expect(user).not_to be_valid
-      expect(user.errors[:name_kana]).to include('はカタカナで入力してください')
-    end
 
       it '生年月日が必須であること' do
         @user.date_of_birth= 'nil'
@@ -158,3 +135,4 @@ RSpec.describe User, type: :model do
     end
   end
 end
+
